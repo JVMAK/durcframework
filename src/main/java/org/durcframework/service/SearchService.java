@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @param <Dao>
  */
 public abstract class SearchService<Entity extends BaseEntity, Dao extends BaseDao<Entity>> {
-
+	
 	private Dao dao;
 
 	public Dao getDao() {
@@ -30,8 +30,13 @@ public abstract class SearchService<Entity extends BaseEntity, Dao extends BaseD
 		this.dao = dao;
 	}
 
-	public Entity getById(Serializable id) {
-		return dao.getById(id);
+	/**
+	 * 通过对象获取记录,可以传主键值,也可以传整个对象
+	 * @param id 如:get(21)或get(student)
+	 * @return 返回实体对象
+	 */
+	public Entity get(Serializable id) {
+		return dao.get(id);
 	}
 
 	/**

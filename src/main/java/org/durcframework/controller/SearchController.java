@@ -269,8 +269,8 @@ public abstract class SearchController<Entity extends BaseEntity, Service extend
 	// @on
 
 	/**
-	 * 默认的日期转化格式
-	 * 
+	 * 日期转化格式,默认为yyyy-MM-dd<br>
+	 * 可以重写此方法返回自定义的日期格式
 	 * @return
 	 */
 	protected String getDateFormatPattern() {

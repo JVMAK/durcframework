@@ -35,12 +35,12 @@ public abstract class CrudController<Entity extends BaseEntity, Service extends 
 	}
 
 	/**
-	 * 修改记录,需要实现Entity.getPk()方法
+	 * 修改记录
 	 * @param entity
 	 * @return
 	 */
 	public ModelAndView update(Entity entity) {
-		Entity e = getService().getById(entity.getPk());
+		Entity e = getService().get(entity);
 		if (e == null) {
 			throw new DurcException("修改失败-该记录不存在");
 		} 
@@ -55,7 +55,7 @@ public abstract class CrudController<Entity extends BaseEntity, Service extends 
 	 * @return
 	 */
 	public ModelAndView delete(Entity entity) {
-		Entity e = getService().getById(entity.getPk());
+		Entity e = getService().get(entity);
 		if (e == null) {
 			throw new DurcException("删除失败-该记录不存在");
 		} else {

@@ -13,17 +13,16 @@ import org.durcframework.expression.ExpressionQuery;
  * @param <Entity>
  */
 public interface BaseDao<Entity extends BaseEntity> {
-	// 查询部分
-	Entity getById(Serializable id);
-
+	// 根据对象查询,可以传主键值,也可以传整个对象
+	Entity get(Serializable id);
+	// 条件查询
 	List<Entity> find(ExpressionQuery query);
-
+	// 查询总记录数
 	Integer findTotalCount(ExpressionQuery query);
-
-	// 修改部分部分
+	// 保存
 	void save(Entity entity);
-
+	// 修改
 	void update(Entity entity);
-
+	// 删除
 	void del(Entity entity);
 }

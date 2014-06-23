@@ -18,15 +18,6 @@ public abstract class BaseEntity implements Serializable {
 	private static final long serialVersionUID = 3135746068620126911L;
 
 	/**
-	 * 用于保存后设置POJO的自增主键
-	 * 
-	 * @param id
-	 */
-	public abstract void setPk(Serializable id);
-
-	public abstract Serializable getPk();
-	
-	/**
 	 * 验证当前类
 	 * @return ValidateHolder 返回验证结果
 	 */
