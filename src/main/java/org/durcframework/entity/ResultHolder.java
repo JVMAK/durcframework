@@ -15,7 +15,13 @@ public class ResultHolder {
 	private int pageIndex = 1;
 	private int pageSize = 10;
 	private int pageCount = 0;
-
+	
+	public ResultHolder(List<?> list){
+		this.list = list;
+		if(list != null && list.size() > 0) {
+			this.total = list.size();
+		}
+	}
 	
 	public ResultHolder(List<?> list, int total, int pageIndex,
 			int pageSize) {

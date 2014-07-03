@@ -1,5 +1,8 @@
 package org.durcframework.util;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -17,13 +20,58 @@ public class ResultUtil {
 	 */
 	private static final String S_RESULT_JSP_NAME = "result";
 
-	// 返回到页面的结果:{"success":false,"errorMsg":"错误..."}
-	private static final String F_ERROR_MSG = "{\"success\":false,\"errorMsg\":\"%s\"}";
-	// 返回到页面的结果:{"success":true,"msg":""}
-	private static final String F_SUCCESS_MSG = "{\"success\":true,\"msg\":\"%s\"}";
-	// 返回到页面的结果:{"success":false,"validateErrors":["用户名错误","密码不正确"]}
-	private static final String F_VALIDATE_ERROR_MSG = "{\"success\":false,\"validateErrors\":%s}";
-
+	private static class Result implements Serializable{
+		private boolean success;
+		private String msg;
+		private String errorMsg;
+		private List<String> validateErrors;
+		
+		public static Result success(String msg){
+			Result result = new Result();
+			result.setSuccess(true);
+			result.setMsg(msg);
+			return result;
+		}
+		
+		public static Result error(String errorMsg){
+			Result result = new Result();
+			result.setSuccess(false);
+			result.setErrorMsg(errorMsg);
+			return result;
+		}
+		
+		public static Result error(String errorMsg,List<String> errors){
+			Result result = error(errorMsg);
+			result.setValidateErrors(errors);
+			return result;
+		}
+		
+		public boolean getSuccess() {
+			return success;
+		}
+		public void setSuccess(boolean success) {
+			this.success = success;
+		}
+		public String getMsg() {
+			return msg;
+		}
+		public void setMsg(String msg) {
+			this.msg = msg;
+		}
+		public String getErrorMsg() {
+			return errorMsg;
+		}
+		public void setErrorMsg(String errorMsg) {
+			this.errorMsg = errorMsg;
+		}
+		public List<String> getValidateErrors() {
+			return validateErrors;
+		}
+		public void setValidateErrors(List<String> validateErrors) {
+			this.validateErrors = validateErrors;
+		}
+		
+	}
 
 	/**
 	 * 返回json格式字符串
@@ -40,19 +88,20 @@ public class ResultUtil {
 
 	/**
 	 * 返回出错信息
-	 * @param msg
-	 * @return {"errorMsg":"错误信息."}
+	 * @param errorMsg
+	 * @return {"success":false,"errorMsg":"错误信息."}
 	 */
-	public static ModelAndView error(String msg) {
-		return buildModelAndView(String.format(F_ERROR_MSG, msg));
+	public static ModelAndView error(String errorMsg) {
+		String json = JsonUtil.toJsonString(Result.error(errorMsg));
+		return buildModelAndView(json);
 	}
 
 	/**
 	 * 返回成功信息
-	 * @return {"success":true,"msg":""}
+	 * @return {"success":true}
 	 */
 	public static ModelAndView success() {
-		return success("");
+		return success(null);
 	}
 	
 	/**
@@ -60,7 +109,8 @@ public class ResultUtil {
 	 * @return {"success":true}
 	 */
 	public static ModelAndView success(String msg) {
-		return buildModelAndView(String.format(F_SUCCESS_MSG, msg));
+		String json = JsonUtil.toJsonString(Result.success(msg));
+		return buildModelAndView(json);
 	}
 	
 	/**
@@ -73,21 +123,23 @@ public class ResultUtil {
 			return success();
 		}
 		
-		String validateErrorJson = buildValidateErrorsJson(holder);
+		Result result = Result.error(null, buildValidateErrors(holder));
 		
-		return buildModelAndView(String.format(F_VALIDATE_ERROR_MSG, validateErrorJson));
+		String json = JsonUtil.toJsonString(result);
+		
+		return buildModelAndView(json);
 	}
 	
 	// 返回格式类似于:["用户名错误","密码不正确"]
-	private static String buildValidateErrorsJson(ValidateHolder holder){
+	private static List<String> buildValidateErrors(ValidateHolder holder){
 		Set<ConstraintViolation<BaseEntity>> set = holder.getConstraintViolations();
-		StringBuilder msg = new StringBuilder();
+		List<String> errors = new ArrayList<String>();
 		
 		for (ConstraintViolation<BaseEntity> c : set) {
-			msg.append(",").append("\"").append(c.getMessage()).append("\"");
+			errors.add(c.getMessage());
 		}
 		
-		return "[" + msg.toString().substring(1) + "]";
+		return errors;
 		
 	}
 	
