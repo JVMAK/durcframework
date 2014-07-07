@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.durcframework</groupId>
 	<artifactId>durcframework</artifactId>
-	<version>0.1.0</version>
+	<version>1.0.0</version>
 
 	<properties>
 		<springframework.version>3.2.2.RELEASE</springframework.version>
