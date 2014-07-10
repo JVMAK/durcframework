@@ -66,7 +66,7 @@ public abstract class ExportController<Entity extends BaseEntity, Service extend
 	public void exportBySearchEntity(
 			SearchEntity searchEntity
 			,HttpServletResponse response) {
-		this.exportByQuery(this.buildExpressionQuery(searchEntity), response);
+		this.exportByQuery(searchEntity.buildExpressionQuery(), response);
 	}
 	
 	

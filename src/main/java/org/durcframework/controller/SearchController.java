@@ -12,8 +12,6 @@ import org.durcframework.dao.BaseDao;
 import org.durcframework.entity.BaseEntity;
 import org.durcframework.entity.ResultHolder;
 import org.durcframework.entity.SearchEntity;
-import org.durcframework.expression.Expression;
-import org.durcframework.expression.ExpressionBuilder;
 import org.durcframework.expression.ExpressionQuery;
 import org.durcframework.processor.JsonObjProcessor;
 import org.durcframework.service.SearchService;
@@ -116,12 +114,12 @@ public abstract class SearchController<Entity extends BaseEntity, Service extend
 	}
 	
 	public ModelAndView queryByEntity(SearchEntity searchEntity) {
-		ExpressionQuery query = buildExpressionQuery(searchEntity);
+		ExpressionQuery query = searchEntity.buildExpressionQuery();
 		return this.query(query);
 	}
 	
 	public ModelAndView queryByEntityWithProcessor(SearchEntity searchEntity,JsonObjProcessor<Entity> processor) {
-		ExpressionQuery query = buildExpressionQuery(searchEntity);
+		ExpressionQuery query = searchEntity.buildExpressionQuery();
 		String json = queryForJsonProcessor(query,processor);
 		return ResultUtil.buildModelAndView(json);
 	}
@@ -163,7 +161,7 @@ public abstract class SearchController<Entity extends BaseEntity, Service extend
 	 * @return
 	 */
 	public ResultHolder queryToResult(SearchEntity searchEntity){
-		ExpressionQuery query = buildExpressionQuery(searchEntity);
+		ExpressionQuery query = searchEntity.buildExpressionQuery();
 		return this.queryToResult(query);
 	}
 
@@ -238,35 +236,6 @@ public abstract class SearchController<Entity extends BaseEntity, Service extend
 		return this.queryForJsonProcessor(query,processor);
 	}
 
-	/**
-	 * 构建查询条件
-	 * 
-	 * @return
-	 */
-	public ExpressionQuery buildExpressionQuery(SearchEntity searchEntity) {
-
-		ExpressionQuery query = new ExpressionQuery();
-
-		buildSearchEntityExpression(query, searchEntity);
-
-		query.setPageIndex(searchEntity.getPageIndex());
-		query.setPageSize(searchEntity.getPageSize());
-		query.setSortname(searchEntity.getSortname());
-		query.setSortorder(searchEntity.getSortorder());
-
-		return query;
-	}
-
-	//// 开启off/on注解,其之间的代码不会被eclipse格式化(CTRL + SHIFT + F)
-	// @off
-	private void buildSearchEntityExpression(ExpressionQuery query,SearchEntity searchEntity) {
-		List<Expression> expresList = ExpressionBuilder.getExpressions(searchEntity);
-		
-		for (Expression express : expresList) {
-			query.add(express);
-		}
-	}
-	// @on
 
 	/**
 	 * 日期转化格式,默认为yyyy-MM-dd<br>

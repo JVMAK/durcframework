@@ -87,7 +87,7 @@ public class ExpressionBuilder {
 	 * @param obj
 	 * @return
 	 */
-	public static List<Expression> getExpressions(Object obj) {
+	public static List<Expression> buildExpressions(Object obj) {
 		if (obj == null) {
 			return null;
 		}
