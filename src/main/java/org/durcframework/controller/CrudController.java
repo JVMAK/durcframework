@@ -28,6 +28,10 @@ public abstract class CrudController<Entity extends BaseEntity, Service extends 
 	public ModelAndView save(Entity entity) {
 		ValidateHolder validateHolder = entity.validate();
 		if(validateHolder.isSuccess()){
+			Entity e = getService().get(entity);
+			if (e != null) {
+				throw new DurcException("添加失败-该记录已存在.");
+			}
 			this.getService().save(entity);
 			return ResultUtil.success();
 		}
@@ -43,10 +47,15 @@ public abstract class CrudController<Entity extends BaseEntity, Service extends 
 		Entity e = getService().get(entity);
 		if (e == null) {
 			throw new DurcException("修改失败-该记录不存在");
-		} 
-		MyBeanUtil.copyProperties(entity, e);
-		getService().update(e);
-		return ResultUtil.success();
+		}
+		
+		ValidateHolder validateHolder = entity.validate();
+		if(validateHolder.isSuccess()){
+			MyBeanUtil.copyProperties(entity, e);
+			getService().update(e);
+			return ResultUtil.success();
+		}
+		return ResultUtil.validateError(validateHolder);
 	}
 
 	/**
