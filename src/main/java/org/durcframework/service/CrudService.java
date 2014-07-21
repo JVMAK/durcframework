@@ -1,7 +1,6 @@
 package org.durcframework.service;
 
 import org.durcframework.dao.BaseDao;
-import org.durcframework.entity.BaseEntity;
 
 /**
  * 负责增删改查的Service
@@ -10,7 +9,7 @@ import org.durcframework.entity.BaseEntity;
  * @param <Entity>
  * @param <Dao>
  */
-public abstract class CrudService<Entity extends BaseEntity, Dao extends BaseDao<Entity>>
+public abstract class CrudService<Entity, Dao extends BaseDao<Entity>>
 		extends SearchService<Entity, Dao> {
 
 	public Entity save(Entity entity) {

@@ -7,7 +7,6 @@ import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 
-import org.durcframework.entity.BaseEntity;
 import org.durcframework.entity.ValidateHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,7 +19,7 @@ public class ResultUtil {
 	 */
 	private static final String S_RESULT_JSP_NAME = "result";
 
-	private static class Result implements Serializable{
+	private static class Result {
 		private boolean success;
 		private String msg;
 		private String errorMsg;
@@ -132,10 +131,10 @@ public class ResultUtil {
 	
 	// 返回格式类似于:["用户名错误","密码不正确"]
 	private static List<String> buildValidateErrors(ValidateHolder holder){
-		Set<ConstraintViolation<BaseEntity>> set = holder.getConstraintViolations();
+		Set<ConstraintViolation<Object>> set = holder.getConstraintViolations();
 		List<String> errors = new ArrayList<String>();
 		
-		for (ConstraintViolation<BaseEntity> c : set) {
+		for (ConstraintViolation<Object> c : set) {
 			errors.add(c.getMessage());
 		}
 		

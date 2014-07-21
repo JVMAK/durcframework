@@ -1,12 +1,12 @@
 package org.durcframework.controller;
 
 import org.durcframework.dao.BaseDao;
-import org.durcframework.entity.BaseEntity;
 import org.durcframework.entity.ValidateHolder;
 import org.durcframework.exception.DurcException;
 import org.durcframework.service.CrudService;
 import org.durcframework.util.MyBeanUtil;
 import org.durcframework.util.ResultUtil;
+import org.durcframework.util.ValidateUtil;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @param <Entity> 实体类
  * @param <Service> 增删改查的Service
  */
-public abstract class CrudController<Entity extends BaseEntity, Service extends CrudService<Entity, ? extends BaseDao<Entity>>>
+public abstract class CrudController<Entity, Service extends CrudService<Entity, ? extends BaseDao<Entity>>>
 		extends SearchController<Entity, Service> {
 
 	/**
@@ -26,12 +26,12 @@ public abstract class CrudController<Entity extends BaseEntity, Service extends 
 	 * @return
 	 */
 	public ModelAndView save(Entity entity) {
-		ValidateHolder validateHolder = entity.validate();
-		if(validateHolder.isSuccess()){
-			Entity e = getService().get(entity);
-			if (e != null) {
-				throw new DurcException("添加失败-该记录已存在.");
-			}
+		Entity e = getService().get(entity);
+		if (e != null) {
+			throw new DurcException("添加失败-该记录已存在.");
+		}
+		ValidateHolder validateHolder = ValidateUtil.validate(entity);
+		if(validateHolder.isSuccess()) {
 			this.getService().save(entity);
 			return ResultUtil.success();
 		}
@@ -49,7 +49,7 @@ public abstract class CrudController<Entity extends BaseEntity, Service extends 
 			throw new DurcException("修改失败-该记录不存在");
 		}
 		
-		ValidateHolder validateHolder = entity.validate();
+		ValidateHolder validateHolder = ValidateUtil.validate(entity);
 		if(validateHolder.isSuccess()){
 			MyBeanUtil.copyProperties(entity, e);
 			getService().update(e);
@@ -67,9 +67,10 @@ public abstract class CrudController<Entity extends BaseEntity, Service extends 
 		Entity e = getService().get(entity);
 		if (e == null) {
 			throw new DurcException("删除失败-该记录不存在");
-		} else {
-			getService().del(entity);
 		}
+		
+		getService().del(entity);
+		
 		return ResultUtil.success();
 	}
 	

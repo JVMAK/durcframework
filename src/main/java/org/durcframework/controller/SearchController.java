@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.durcframework.dao.BaseDao;
-import org.durcframework.entity.BaseEntity;
 import org.durcframework.entity.ResultHolder;
 import org.durcframework.entity.SearchEntity;
 import org.durcframework.expression.ExpressionQuery;
@@ -35,7 +34,7 @@ import com.alibaba.fastjson.JSONObject;
  * @param <Service>
  *            查询的Service
  */
-public abstract class SearchController<Entity extends BaseEntity, Service extends SearchService<Entity, ? extends BaseDao<Entity>>> {
+public abstract class SearchController<Entity, Service extends SearchService<Entity, ? extends BaseDao<Entity>>> {
 
 	private static DateFormat defaultDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private static CustomDateEditor customDateEditor = new CustomDateEditor(defaultDateFormat, true);

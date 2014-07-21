@@ -21,7 +21,6 @@ import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.durcframework.dao.BaseDao;
-import org.durcframework.entity.BaseEntity;
 import org.durcframework.entity.ResultHolder;
 import org.durcframework.entity.SearchEntity;
 import org.durcframework.exception.DurcException;
@@ -39,7 +38,7 @@ import org.springframework.util.StringUtils;
  * @param <Entity>
  * @param <Service>
  */
-public abstract class ExportController<Entity extends BaseEntity, Service extends SearchService<Entity, ? extends BaseDao<Entity>>>
+public abstract class ExportController<Entity, Service extends SearchService<Entity, ? extends BaseDao<Entity>>>
 		extends SearchController<Entity, Service> {
 	
 	private static Logger logger = Logger.getLogger(ExportController.class);

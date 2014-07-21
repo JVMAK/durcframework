@@ -8,11 +8,12 @@ import javax.validation.ConstraintViolation;
  * 验证结果
  * @author hc.tang
  * 2014年6月19日
+ * @param <T>
  *
  */
 public class ValidateHolder {
 	private boolean isSuccess;
-	private Set<ConstraintViolation<BaseEntity>> constraintViolations;
+	private Set<ConstraintViolation<Object>> constraintViolations;
 
 	public boolean isSuccess() {
 		return isSuccess;
@@ -22,12 +23,12 @@ public class ValidateHolder {
 		this.isSuccess = isSuccess;
 	}
 
-	public Set<ConstraintViolation<BaseEntity>> getConstraintViolations() {
+	public Set<ConstraintViolation<Object>> getConstraintViolations() {
 		return constraintViolations;
 	}
 
 	public void setConstraintViolations(
-			Set<ConstraintViolation<BaseEntity>> constraintViolations) {
+			Set<ConstraintViolation<Object>> constraintViolations) {
 		this.constraintViolations = constraintViolations;
 	}
 

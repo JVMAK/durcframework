@@ -1,9 +1,7 @@
 package org.durcframework.dao;
 
-import java.io.Serializable;
 import java.util.List;
 
-import org.durcframework.entity.BaseEntity;
 import org.durcframework.expression.ExpressionQuery;
 
 /**
@@ -12,9 +10,9 @@ import org.durcframework.expression.ExpressionQuery;
  * 
  * @param <Entity>
  */
-public interface BaseDao<Entity extends BaseEntity> {
+public interface BaseDao<Entity> {
 	// 根据对象查询,可以传主键值,也可以传整个对象
-	Entity get(Serializable id);
+	Entity get(Object id);
 	// 条件查询
 	List<Entity> find(ExpressionQuery query);
 	// 查询总记录数

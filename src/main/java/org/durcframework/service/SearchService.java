@@ -1,11 +1,9 @@
 package org.durcframework.service;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
 import org.durcframework.dao.BaseDao;
-import org.durcframework.entity.BaseEntity;
 import org.durcframework.expression.ExpressionQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @param <Entity>
  * @param <Dao>
  */
-public abstract class SearchService<Entity extends BaseEntity, Dao extends BaseDao<Entity>> {
+public abstract class SearchService<Entity, Dao extends BaseDao<Entity>> {
 	
 	private Dao dao;
 
@@ -35,7 +33,7 @@ public abstract class SearchService<Entity extends BaseEntity, Dao extends BaseD
 	 * @param id 如:get(21)或get(student)
 	 * @return 返回实体对象
 	 */
-	public Entity get(Serializable id) {
+	public Entity get(Object id) {
 		return dao.get(id);
 	}
 
