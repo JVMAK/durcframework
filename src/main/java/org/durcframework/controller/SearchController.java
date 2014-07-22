@@ -156,6 +156,16 @@ public abstract class SearchController<Entity, Service extends SearchService<Ent
 	
 	/**
 	 * 将查询结果放到ResultHolder类中,可以从这个类中获取查询信息
+	 * @param query
+	 * @return 返回所有的查询信息
+	 */
+	public ResultHolder queryAllToResult(ExpressionQuery query) {
+		query.setIsQueryAll(true);
+		return this.queryToResult(query);
+	}
+	
+	/**
+	 * 将查询结果放到ResultHolder类中,可以从这个类中获取查询信息
 	 * @param searchEntity
 	 * @return
 	 */
