@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.durcframework.expression.subexpression.AbstractJoinExpression;
 import org.durcframework.expression.subexpression.ListExpression;
 import org.durcframework.expression.subexpression.ValueExpression;
 import org.springframework.util.StringUtils;
@@ -30,14 +29,20 @@ public class ExpressionQuery {
 	private Map<String, Object> paramMap = new HashMap<String, Object>();
 
 	private List<ValueExpression> valueExprList = new ArrayList<ValueExpression>();
-	private List<AbstractJoinExpression> joinExprList = new ArrayList<AbstractJoinExpression>();
+	private List<JoinExpression> joinExprList = new ArrayList<JoinExpression>();
 	private List<ListExpression> listExprList = new ArrayList<ListExpression>();
+	
+	public static ExpressionQuery buildQueryAll(){
+		ExpressionQuery query = new ExpressionQuery();
+		query.isQueryAll = true;
+		return query;
+	}
 
 	public void addValueExpression(ValueExpression expression) {
 		valueExprList.add(expression);
 	}
 
-	public void addJoinExpression(AbstractJoinExpression expression) {
+	public void addJoinExpression(JoinExpression expression) {
 		joinExprList.add(expression);
 	}
 
@@ -132,11 +137,11 @@ public class ExpressionQuery {
 		this.valueExprList = valueExprList;
 	}
 
-	public List<AbstractJoinExpression> getJoinExprList() {
+	public List<JoinExpression> getJoinExprList() {
 		return joinExprList;
 	}
 
-	public void setJoinExprList(List<AbstractJoinExpression> joinExprList) {
+	public void setJoinExprList(List<JoinExpression> joinExprList) {
 		this.joinExprList = joinExprList;
 	}
 

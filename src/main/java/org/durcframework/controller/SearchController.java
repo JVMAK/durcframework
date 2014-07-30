@@ -73,6 +73,15 @@ public abstract class SearchController<Entity, Service extends SearchService<Ent
 		return ResultUtil.success(msg);
 	}
 	
+	public ModelAndView success(List<Entity> list){
+		
+		ResultHolder holder = new ResultHolder(list, list.size(), 1, 0);
+		
+		String json = JsonUtil.toJsonString(buildJsonMap(holder), getDateFormatPattern());
+		
+		return ResultUtil.buildModelAndView(json);
+	}
+	
 	/**
 	 * 返回错误的视图
 	 * @param errorMsg 错误信息

@@ -1,11 +1,6 @@
 package org.durcframework.util;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
 
 import org.durcframework.entity.ValidateHolder;
 import org.springframework.util.StringUtils;
@@ -122,24 +117,11 @@ public class ResultUtil {
 			return success();
 		}
 		
-		Result result = Result.error(null, buildValidateErrors(holder));
+		Result result = Result.error(null, holder.buildValidateErrors());
 		
 		String json = JsonUtil.toJsonString(result);
 		
 		return buildModelAndView(json);
-	}
-	
-	// 返回格式类似于:["用户名错误","密码不正确"]
-	private static List<String> buildValidateErrors(ValidateHolder holder){
-		Set<ConstraintViolation<Object>> set = holder.getConstraintViolations();
-		List<String> errors = new ArrayList<String>();
-		
-		for (ConstraintViolation<Object> c : set) {
-			errors.add(c.getMessage());
-		}
-		
-		return errors;
-		
 	}
 	
 }

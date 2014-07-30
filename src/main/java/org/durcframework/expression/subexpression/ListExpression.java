@@ -1,12 +1,14 @@
 package org.durcframework.expression.subexpression;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
 
 import org.durcframework.expression.Expression;
 import org.durcframework.expression.ExpressionQuery;
 import org.durcframework.expression.SqlContent;
+import org.durcframework.expression.ValueConvert;
 
 /**
  * list或数组查询雕件
@@ -17,12 +19,21 @@ public class ListExpression implements Expression {
 
 	private String column = "";
 	private String equal = SqlContent.IN;
-	private List<?> value = Collections.EMPTY_LIST;
+	private Collection<?> value = Collections.EMPTY_LIST;
 	private String joint = SqlContent.AND;
 	
-	public ListExpression(String column, List<?> value) {
+	public ListExpression(String column, Collection<?> value) {
 		this.column = column;
 		this.value = value;
+	}
+	
+	public ListExpression(String column, Collection<?> value,ValueConvert valueConvert) {
+		this.column = column;
+		Collection<Object> newSet = new HashSet<Object>();
+		for (Object obj : value) {
+			newSet.add(valueConvert.convert(obj));
+		}
+		this.value = newSet;
 	}
 	
 	public ListExpression(String column, Object[] value) {
@@ -39,13 +50,13 @@ public class ListExpression implements Expression {
 		this.joint = joint;
 	}
 
-	public ListExpression(String column, String equal, List<?> value) {
+	public ListExpression(String column, String equal, Collection<?> value) {
 		this(column, value);
 		this.equal = equal;
 	}
 
 	public ListExpression(String joint, String column, String equal,
-			List<?> value) {
+			Collection<?> value) {
 		this(column, equal, value);
 		this.joint = joint;
 	}
@@ -71,11 +82,11 @@ public class ListExpression implements Expression {
 		this.equal = equal;
 	}
 
-	public List<?> getValue() {
+	public Collection<?> getValue() {
 		return value;
 	}
 
-	public void setValue(List<?> value) {
+	public void setValue(Collection<?> value) {
 		this.value = value;
 	}
 

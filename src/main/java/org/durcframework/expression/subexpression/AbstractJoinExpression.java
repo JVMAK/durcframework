@@ -2,6 +2,7 @@ package org.durcframework.expression.subexpression;
 
 import org.durcframework.expression.Expression;
 import org.durcframework.expression.ExpressionQuery;
+import org.durcframework.expression.JoinExpression;
 import org.durcframework.expression.SqlContent;
 
 /**
@@ -10,7 +11,7 @@ import org.durcframework.expression.SqlContent;
  * 2014年6月12日
  *
  */
-public abstract class AbstractJoinExpression implements Expression {
+public abstract class AbstractJoinExpression implements Expression,JoinExpression {
 
 	private String secondTableName;
 	private String secondTableTableAlias = "";
@@ -47,7 +48,7 @@ public abstract class AbstractJoinExpression implements Expression {
 		query.addJoinExpression(this);
 	}
 
-
+	@Override
 	public String getExprString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(SqlContent.BLANK).append(getJoinType())

@@ -1,5 +1,7 @@
 package org.durcframework.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -30,6 +32,18 @@ public class ValidateHolder {
 	public void setConstraintViolations(
 			Set<ConstraintViolation<Object>> constraintViolations) {
 		this.constraintViolations = constraintViolations;
+	}
+	
+	// 返回格式类似于:["用户名错误","密码不正确"]
+	public List<String> buildValidateErrors(){
+		Set<ConstraintViolation<Object>> set = this.getConstraintViolations();
+		List<String> errors = new ArrayList<String>();
+		
+		for (ConstraintViolation<Object> c : set) {
+			errors.add(c.getMessage());
+		}
+		
+		return errors;
 	}
 
 }

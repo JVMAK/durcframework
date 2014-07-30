@@ -34,7 +34,7 @@ public class ResultHolder {
 		if (total == 0) {
 			this.pageCount = 0;
 		} else {
-			this.pageCount = Integer.valueOf((total - 1) / pageSize + 1);
+			this.pageCount = Integer.valueOf((total - 1) / (pageSize + 1));
 		}
 
 	}
