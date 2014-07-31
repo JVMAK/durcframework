@@ -1,5 +1,7 @@
 package org.durcframework.common;
 
+import javax.servlet.http.HttpSession;
+
 import org.durcframework.entity.IUser;
 
 public enum UserContext {
@@ -16,8 +18,19 @@ public enum UserContext {
 	 * @return
 	 */
 	public <T extends IUser> T getUser() {
-		return (T) WebContext.getInstance().getSession()
-				.getAttribute(S_KEY_USER);
+		HttpSession session = WebContext.getInstance().getSession();
+		if(session != null){
+			return (T)session.getAttribute(S_KEY_USER);
+		}
+		return null;
+	}
+	
+	/**
+	 * 获取用户
+	 * @return
+	 */
+	public <T extends IUser> T getUser(HttpSession session) {
+		return (T) session.getAttribute(S_KEY_USER);
 	}
 
 	/**
@@ -25,8 +38,10 @@ public enum UserContext {
 	 * @param BackUser
 	 */
 	public <T extends IUser> void setUser(T t) {
-		WebContext.getInstance().getSession()
-				.setAttribute(S_KEY_USER, t);
+		HttpSession session = WebContext.getInstance().getSession();
+		if(session != null){
+			session.setAttribute(S_KEY_USER, t);
+		}
 	}
 
 	public boolean isAdmin() {

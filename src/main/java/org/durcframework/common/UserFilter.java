@@ -33,9 +33,51 @@ public class UserFilter implements Filter{
 		if (isLogin(request)) {
 			arg2.doFilter(arg0, arg1);
 		} else {
-			response.sendRedirect(request.getContextPath() + "/" + getNeedLoginPage());
+			redirect(request,response);
 		}
 	}
+	
+	/**
+	 * 跳转
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
+	protected void redirect(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		// 如果是ajax请求
+		/*
+		 * 前台页面可以这样处理
+		 * if (typeof(jQuery) != 'undefined') {
+			    $(document).ajaxError(function (event, request, settings) {
+			        if (request.getResponseHeader("X-timeout") && request.status == 401) {
+			            // 跳转到首页
+			        	top.location.href = ctx;
+			        }else{
+			        	alert("系统异常");
+			        }
+			    });
+			}
+			这段代码放在页面底部即可
+		 */
+		if(isAjaxRequest(request)){
+			response.setHeader("X-timeout", "1");
+        	response.setStatus(401);
+        	response.getWriter().close();
+			return;
+		}
+		response.sendRedirect(request.getContextPath() + "/" + getNeedLoginPage());
+	}
+	
+	/** 
+	 * 判断请求是否为Ajax请求. <br/> 
+	 * 
+	 * @param request 请求对象 
+	 * @return boolean 
+	 */  
+	public boolean isAjaxRequest(HttpServletRequest request){  
+	    String header = request.getHeader("X-Requested-With");
+	    return "XMLHttpRequest".equals(header);  
+	} 
 	
 	/**
 	 * 用户登陆页面
