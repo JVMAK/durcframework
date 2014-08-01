@@ -2,6 +2,7 @@ package org.durcframework.common;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.Filter;
@@ -107,11 +108,14 @@ public class UserFilter implements Filter{
 	}
 	
 	@Override
-	public void init(FilterConfig arg0) throws ServletException {
+	public void init(FilterConfig filterConfig) throws ServletException {
+		String paramValue = filterConfig.getInitParameter("excludeUrl");
+		String[] urlArr = paramValue.split(",");
+		
 		NEED_NOT_LOGGIN.add("");
-		NEED_NOT_LOGGIN.add("index.jsp");
-		NEED_NOT_LOGGIN.add("login.jsp");
-		NEED_NOT_LOGGIN.add("login.do");
+		
+		Collections.addAll(NEED_NOT_LOGGIN, urlArr);
+		
 		NEED_NOT_LOGGIN.add(getNeedLoginPage());
 	}
 }
