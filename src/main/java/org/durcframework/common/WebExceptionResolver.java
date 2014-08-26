@@ -19,7 +19,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  */
 public class WebExceptionResolver implements HandlerExceptionResolver {
 
-	private static Logger logger = Logger.getLogger(WebExceptionResolver.class);
+	private Logger logger = Logger.getLogger(this.getClass());
 	
 	@Override
 	@JSONField(serialize = false)
