@@ -55,9 +55,9 @@ public abstract class AbstractJoinExpression implements Expression,JoinExpressio
 				.append(SqlContent.BLANK).append(secondTableName)
 				.append(SqlContent.BLANK).append(secondTableTableAlias)
 				.append(SqlContent.BLANK).append(SqlContent.ON)
-				.append(SqlContent.BLANK).append(firstTableAlias).append(".")
+				.append(SqlContent.BLANK).append(firstTableAlias).append(SqlContent.DOT)
 				.append(firstTableColumn).append(SqlContent.EQUAL)
-				.append(secondTableTableAlias).append(".")
+				.append(secondTableTableAlias).append(SqlContent.DOT)
 				.append(secondTableColumn);
 		
 		return sb.toString();

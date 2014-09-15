@@ -19,5 +19,6 @@ public class SqlContent {
 	public static final String ON = "ON";
 	public static final String ASC = "ASC";
 	public static final String DESC = "DESC";
+	public static final String DOT = ".";
 }
 
