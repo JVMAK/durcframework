@@ -24,10 +24,6 @@ public class ValueExpression implements Expression {
 	public ValueExpression(String column, String equal, Object value) {
 		this(column, value);
 		this.equal = equal;
-
-		if (SqlContent.LIKE.equalsIgnoreCase(equal) && value != null) {
-			this.value = "%" + value + "%";
-		}
 	}
 
 	public ValueExpression(String joint, String column, String equal,

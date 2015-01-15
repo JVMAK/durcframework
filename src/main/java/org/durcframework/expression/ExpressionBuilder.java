@@ -6,12 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.durcframework.expression.annotation.AnnoExprStore;
+import org.durcframework.expression.annotation.LikeDoubleField;
+import org.durcframework.expression.annotation.LikeLeftField;
+import org.durcframework.expression.annotation.LikeRightField;
 import org.durcframework.expression.annotation.ListField;
 import org.durcframework.expression.annotation.ValueField;
 import org.durcframework.expression.getter.ExpressionGetter;
-import org.durcframework.expression.subexpression.ListExpression;
-import org.durcframework.expression.subexpression.ValueExpression;
-import org.springframework.util.StringUtils;
+import org.durcframework.expression.getter.impl.LikeDoubleExpressionGetter;
+import org.durcframework.expression.getter.impl.LikeLeftExpressionGetter;
+import org.durcframework.expression.getter.impl.LikeRightExpressionGetter;
+import org.durcframework.expression.getter.impl.ListExpressionGetter;
+import org.durcframework.expression.getter.impl.ValueExpressionGetter;
 
 /**
  * 从bean中获取Expression
@@ -22,64 +27,13 @@ public class ExpressionBuilder {
 
 	private static final String PREFIX_GET = "get";
 
-	// =============内部类=============
-	// 构建list查询条件
-	private static class ListExpressionGetter implements ExpressionGetter {
-
-		@Override
-		public Expression buildExpression(Annotation annotation, String column,
-				Object value) {
-			if (value == null) {
-				return null;
-			}
-			ListField listValueField = (ListField) annotation;
-			String joint = listValueField.joint();
-			String equal = listValueField.equal();
-			String field = listValueField.column();
-			if (StringUtils.hasText(field)) {
-				column = field;
-			}
-			if (value.getClass().isArray()) {
-				return new ListExpression(joint, column, equal,
-						(Object[]) value);
-			}
-			if (value instanceof List) {
-				return new ListExpression(joint, column, equal, (List<?>) value);
-			}
-			return null;
-		}
-	}
-	
-	// 构建单值查询条件工厂
-	private static class ValueExpressionGetter implements ExpressionGetter {
-
-		@Override
-		public Expression buildExpression(Annotation annotation, String column,
-				Object value) {
-			if (value == null) {
-				return null;
-			}
-			if (value instanceof String) {
-				if (!StringUtils.hasText((String) value)) {
-					return null;
-				}
-			}
-			ValueField valueField = (ValueField) annotation;
-			String fieldColumn = valueField.column();
-			if (StringUtils.hasText(fieldColumn)) {
-				column = fieldColumn;
-			}
-			return new ValueExpression(valueField.joint(), column,
-					valueField.equal(), value);
-		}
-
-	}
-
+	// init
 	static {
-		AnnoExprStore.addExpressionGetter(ListField.class,
-				new ListExpressionGetter());
-		AnnoExprStore.addExpressionGetter(ValueField.class,
-				new ValueExpressionGetter());
+		AnnoExprStore.addExpressionGetter(ListField.class,new ListExpressionGetter());
+		AnnoExprStore.addExpressionGetter(ValueField.class,new ValueExpressionGetter());
+		AnnoExprStore.addExpressionGetter(LikeLeftField.class,new LikeLeftExpressionGetter());
+		AnnoExprStore.addExpressionGetter(LikeRightField.class,new LikeRightExpressionGetter());
+		AnnoExprStore.addExpressionGetter(LikeDoubleField.class,new LikeDoubleExpressionGetter());
 	}
 
 	/**
