@@ -12,4 +12,43 @@
 	1. 少量代码完成对一张表的增删改查。
 	2. 数据导出
 	3. 数据校验
+
+==============================
+Controller完成对学生表的增删改查
+
+// 继承CrudController,表示该Controller具有增删改查功能
+@Controller
+public class StudentCrudController extends CrudController<Student, StudentService> {
 	
+	@RequestMapping("/addStudent.do")
+	public ModelAndView addStudent(Student student) {
+		ModelAndView mav = this.save(student);
+		System.out.println("添加后的主键ID:"+ student.getId());
+		return mav;
+	}
+	
+	@RequestMapping("/listStudent.do")
+	public ModelAndView listStudent(SearchStudentEntity searchStudentEntity) {
+		return this.queryByEntity(searchStudentEntity);
+	}
+	
+	@RequestMapping("/updateStudent.do")
+	public ModelAndView updateStudent(Student student) {
+		return this.update(student);
+	}
+	
+	// 传一个id值即可,根据主键删除
+	@RequestMapping("/delStudent.do")
+	public ModelAndView delStudent(Student student) {
+		// 通过主键查询某一条记录
+		System.out.println(this.getService().get(student.getId()));
+		return this.delete(student);
+	}
+	
+}
+// 只需简单继承无需其它代码
+@Service
+public class StudentService extends CrudService<Student, StudentDao> {}
+
+// 只需简单继承无需其它代码
+public interface StudentDao extends BaseDao<Student> {}
